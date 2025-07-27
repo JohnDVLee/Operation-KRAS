@@ -28,7 +28,6 @@
       opacity: 0.85;
     }
 
-    /* Hover animation */
     .shake {
       animation: shake 0.75s ease;
     }
@@ -40,7 +39,6 @@
       100% { transform: rotate(0deg); }
     }
 
-    /* Unlock animation */
     .open {
       animation: openChest 2s ease-in-out forwards;
     }
@@ -70,6 +68,9 @@
   <!-- Audio for chest opening -->
   <audio id="openSound" src="TreasureChestOpeningSound.mp3" preload="auto"></audio>
 
+  <!-- Audio for key hover -->
+  <audio id="keyHoverSound" src="KeySound.wav" preload="auto"></audio>
+
   <img src="ChestKey3.png"
        alt="Key"
        class="key"
@@ -93,24 +94,48 @@
       const chest = document.getElementById("chest");
       const openSound = document.getElementById("openSound");
 
-      // Remove hover animation class if present
       chest.classList.remove("shake");
-
-      // Add open animation
       chest.classList.add("open");
 
-      // Play opening sound
       openSound.currentTime = 0;
       openSound.play();
 
-      // Redirect after animation
-      setTimeout(() => {
-        window.location.href = "Operation KRAS3.html";
-      }, 1000);
+      // ✅ Store flag for next page to play audio
+      sessionStorage.setItem("playKRAS3Audio", "true");
+
+     setTimeout(() => {
+  // Set flag to play audio on next page
+  sessionStorage.setItem("playKRAS3Audio", "true");
+
+  // Redirect
+  window.location.href = "Operation KRAS3.html";
+}, 1000);
+
     }
+
+    const key = document.getElementById("key");
+    const keyHoverSound = document.getElementById("keyHoverSound");
+
+    let hoverSoundEnabled = false;
+
+    // Enable hover sound after first user interaction
+    document.addEventListener("click", () => {
+      hoverSoundEnabled = true;
+    });
+
+    key.addEventListener("mouseenter", () => {
+      if (hoverSoundEnabled) {
+        keyHoverSound.currentTime = 0;
+        keyHoverSound.play();
+      }
+    });
   </script>
 </body>
 </html>
+
+
+
+
 
 
 

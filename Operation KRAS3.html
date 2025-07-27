@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Ancient Note</title>
   <!-- Import the Dancing Script font -->
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
@@ -16,6 +16,7 @@
       background-position: center;
       font-family: 'EB Garamond', serif;
       color: #3b2f1e;
+      text-align: center;
     }
 
     .note {
@@ -30,35 +31,83 @@
       font-size: 30px;
       white-space: pre-wrap;
       border-radius: 12px;
-      font-family: 'Dancing Script', cursive; /* Set proper cursive font */
+      font-family: 'Dancing Script', cursive;
     }
 
     .mystery {
       display: block;
       margin-top: 30px;
-      text-align: center;
       font-size: 24px;
       font-weight: bold;
       letter-spacing: 2px;
       color: #5c3b1c;
     }
+
+    /* Updated bigger button style */
+    #playButton {
+      font-size: 32px;
+      padding: 20px 60px;
+      margin: 40px auto;
+      background-color: #a58c5f;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      cursor: pointer;
+      box-shadow: 3px 3px 8px rgba(0,0,0,0.4);
+      transition: background-color 0.3s ease;
+    }
+    #playButton:hover {
+      background-color: #8c7546;
+    }
   </style>
 </head>
 <body>
+
+  <audio id="revealAudio" src="KRAS3DrunkenSailorMusic.mp3" preload="auto"></audio>
+
   <div class="note">
-        Charts the stars, aligns the days,<br>
-        With color-coded tabs and phase.<br>
-        Yet this time, chaos claimed the wheel—<br>
-        No plan, no list, no set ordeal.<br><br>
+    Charts the stars, aligns the days,<br />
+    With color-coded tabs and phase.<br />
+    Yet this time, chaos claimed the wheel—<br />
+    No plan, no list, no set ordeal.<br /><br />
 
-        But fate is sly, and secrets hide,<br>
-        In letters where the truths collide.<br><br>
+    But fate is sly, and secrets hide,<br />
+    In letters where the truths collide.<br /><br />
 
-        Among you, cloaked in plain sight,<br>
-        Disguised in disarray:<br><br>
+    Among you, cloaked in plain sight,<br />
+    Disguised in disarray:<br /><br />
 
     <span class="mystery">✨ SLIP IN HARD VAIN PLAY ✨</span>
   </div>
+
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const shouldPlay = sessionStorage.getItem("playKRAS3Audio");
+      const audio = document.getElementById("revealAudio");
+
+      if (shouldPlay === "true") {
+        // Clear flag so it won't repeat on refresh
+        sessionStorage.removeItem("playKRAS3Audio");
+
+        // Create play button
+        const playBtn = document.createElement("button");
+        playBtn.id = "playButton";
+        playBtn.textContent = "Play Secret Audio";
+        document.body.insertBefore(playBtn, document.body.firstChild);
+
+        playBtn.addEventListener("click", () => {
+          audio.play().catch((err) => {
+            console.warn("Playback failed:", err);
+          });
+          playBtn.remove();
+        });
+      }
+    });
+  </script>
 </body>
 </html>
+
+
+
+
 
