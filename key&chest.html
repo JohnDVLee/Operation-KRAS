@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Unlock the Chest</title>
+  <style>
+    body {
+      background: hwb(0 100% 0%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: 'Georgia', serif;
+      margin: 0;
+    }
+
+    .key {
+      width: 500px;
+      cursor: grab;
+      opacity: 0.85; /* Semi-transparent */
+    }
+
+    .chest {
+      width: 700px;
+      margin-top: 50px;
+      transition: transform 0.3s ease;
+      opacity: 0.85; /* Semi-transparent */
+    }
+
+    .shake {
+      animation: shake 0.5s ease;
+    }
+
+    @keyframes shake {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(-5px, 0); }
+      50% { transform: translate(5px, 0); }
+      75% { transform: translate(-5px, 0); }
+      100% { transform: translate(0, 0); }
+    }
+
+    h1 {
+      margin-bottom: 30px;
+      text-align: center;
+      color: #5c3b1e;
+    }
+  </style>
+</head>
+<body>
+
+  <h1></h1>
+
+  <img src="ChestKey3.png"
+       alt="Key"
+       class="key"
+       id="key"
+       draggable="true">
+       
+  <div ondrop="unlock(event)" ondragover="allowDrop(event)">
+    <img src="TreasureChest2.png"
+         alt="Chest"
+         class="chest"
+         id="chest">
+  </div>
+
+  <script>
+    function allowDrop(ev) {
+      ev.preventDefault();
+    }
+
+    function unlock(ev) {
+      ev.preventDefault();
+      const chest = document.getElementById("chest");
+      chest.classList.add("shake");
+
+      setTimeout(() => {
+        window.location.href = "Operation KRAS3.html";
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
