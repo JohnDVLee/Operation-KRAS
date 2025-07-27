@@ -18,26 +18,42 @@
     .key {
       width: 500px;
       cursor: grab;
-      opacity: 0.85; /* Semi-transparent */
+      opacity: 0.85;
     }
 
     .chest {
       width: 700px;
       margin-top: 50px;
       transition: transform 0.3s ease;
-      opacity: 0.85; /* Semi-transparent */
+      opacity: 0.85;
     }
 
+    /* Hover animation */
     .shake {
-      animation: shake 0.5s ease;
+      animation: shake 0.75s ease;
     }
 
     @keyframes shake {
-      0% { transform: translate(0, 0); }
-      25% { transform: translate(-5px, 0); }
-      50% { transform: translate(5px, 0); }
-      75% { transform: translate(-5px, 0); }
-      100% { transform: translate(0, 0); }
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(-15deg); }
+      75% { transform: rotate(15deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    /* Unlock animation */
+    .open {
+      animation: openChest 2s ease-in-out forwards;
+    }
+
+    @keyframes openChest {
+      0% { transform: scale(1) rotate(0deg); }
+      30% { transform: scale(1.1) rotate(-2deg); }
+      60% { transform: scale(1.05) rotate(2deg); }
+      100% { transform: scale(1.15) rotate(0deg); opacity: 1; }
+    }
+
+    .chest:hover {
+      animation: shake 0.75s ease;
     }
 
     h1 {
@@ -50,6 +66,9 @@
 <body>
 
   <h1></h1>
+
+  <!-- Audio for chest opening -->
+  <audio id="openSound" src="TreasureChestOpeningSound.mp3" preload="auto"></audio>
 
   <img src="ChestKey3.png"
        alt="Key"
@@ -72,8 +91,19 @@
     function unlock(ev) {
       ev.preventDefault();
       const chest = document.getElementById("chest");
-      chest.classList.add("shake");
+      const openSound = document.getElementById("openSound");
 
+      // Remove hover animation class if present
+      chest.classList.remove("shake");
+
+      // Add open animation
+      chest.classList.add("open");
+
+      // Play opening sound
+      openSound.currentTime = 0;
+      openSound.play();
+
+      // Redirect after animation
       setTimeout(() => {
         window.location.href = "Operation KRAS3.html";
       }, 1000);
@@ -81,6 +111,11 @@
   </script>
 </body>
 </html>
+
+
+
+
+
 
 
 
