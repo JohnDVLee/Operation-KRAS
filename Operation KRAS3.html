@@ -3,69 +3,76 @@
 <head>
   <meta charset="UTF-8" />
   <title>Ancient Note</title>
-  <!-- Import the Dancing Script font -->
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet" />
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #f3e9d2;
-      background-image: url('https://upload.wikimedia.org/wikipedia/commons/7/7d/Parchment_background.jpg');
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      font-family: 'EB Garamond', serif;
-      color: #3b2f1e;
-      text-align: center;
-    }
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #f3e9d2;
+    background-image: url('TreasureMap.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: 'EB Garamond', serif;
+    color: #3b2f1e;
+    text-align: center;
+  }
 
-    .note {
-      max-width: 1000px;
-      margin: 5% auto;
-      background: rgba(255, 255, 240, 0.85);
-      border: 2px solid #a58c5f;
-      padding: 40px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-      transform: rotate(-5deg);
-      line-height: 1.4;
-      font-size: 30px;
-      white-space: pre-wrap;
-      border-radius: 12px;
-      font-family: 'Dancing Script', cursive;
-    }
+  .scroll-wrapper {
+  width: 80%;
+  max-width: 700px;
+  margin: 60px auto;
+  padding: 80px 50px;
+  background-image: url('PaperScroll.png'); /* your scroll image */
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center top;
+  font-family: 'Dancing Script', cursive;
+  font-size: 24px;
+  line-height: 1.45;
+  color: #3b2f1e;
+  white-space: pre-wrap;
+  text-shadow: 1px 1px 1px #e8dcc1;
+  box-sizing: border-box;
 
-    .mystery {
-      display: block;
-      margin-top: 30px;
-      font-size: 24px;
-      font-weight: bold;
-      letter-spacing: 2px;
-      color: #5c3b1c;
-    }
+  transform: rotate(-5deg);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+}
 
-    /* Updated bigger button style */
-    #playButton {
-      font-size: 32px;
-      padding: 20px 60px;
-      margin: 40px auto;
-      background-color: #a58c5f;
-      border: none;
-      border-radius: 12px;
-      color: white;
-      cursor: pointer;
-      box-shadow: 3px 3px 8px rgba(0,0,0,0.4);
-      transition: background-color 0.3s ease;
-    }
-    #playButton:hover {
-      background-color: #8c7546;
-    }
-  </style>
+.mystery {
+  display: block;
+  margin-top: 25px;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 1.75px;
+  color: #5c3b1c;
+  text-shadow: 1px 1px #f0e0c0;
+}
+
+
+  #playButton {
+    font-size: 32px;
+    padding: 20px 60px;
+    margin: 40px auto;
+    background-color: #a58c5f;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.4);
+    transition: background-color 0.3s ease;
+  }
+  #playButton:hover {
+    background-color: #8c7546;
+  }
+</style>
+
 </head>
 <body>
 
   <audio id="revealAudio" src="KRAS3DrunkenSailorMusic.mp3" preload="auto"></audio>
 
-  <div class="note">
+  <div class="scroll-wrapper">
     Charts the stars, aligns the days,<br />
     With color-coded tabs and phase.<br />
     Yet this time, chaos claimed the wheel—<br />
@@ -86,10 +93,8 @@
       const audio = document.getElementById("revealAudio");
 
       if (shouldPlay === "true") {
-        // Clear flag so it won't repeat on refresh
         sessionStorage.removeItem("playKRAS3Audio");
 
-        // Create play button
         const playBtn = document.createElement("button");
         playBtn.id = "playButton";
         playBtn.textContent = "Play Secret Audio";
@@ -106,6 +111,13 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
 
 
 
