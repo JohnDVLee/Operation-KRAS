@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Unlock the Chest</title>
   <style>
     body {
@@ -13,19 +13,40 @@
       height: 100vh;
       font-family: 'Georgia', serif;
       margin: 0;
+      user-select: none;
+      overflow: hidden;
+      position: relative;
     }
 
-    .key {
-      width: 500px;
-      cursor: grab;
-      opacity: 0.85;
-    }
+   .key {
+  width: 400px;
+  cursor: grab;
+  opacity: 0.85;
+  position: absolute;
+  top: 150px; /* moved up a bit */
+  left: 50%;
+  transform: translateX(-50%);
+  transition: none;
+  z-index: 10;
+}
 
+.chest-container {
+  width: 600px;
+  position: absolute;
+  top: 1100px; /* moved down more */
+  left: 50%;
+  transform: translateX(-50%);
+  user-select: none;
+}
+
+
+    /* Chest image itself: handle shake animation */
     .chest {
-      width: 700px;
-      margin-top: 50px;
-      transition: transform 0.3s ease;
+      width: 100%;
       opacity: 0.85;
+      transition: transform 0.3s ease;
+      display: block;
+      margin: 0 auto;
     }
 
     .shake {
@@ -50,7 +71,8 @@
       100% { transform: scale(1.15) rotate(0deg); opacity: 1; }
     }
 
-    .chest:hover {
+    /* Apply shake animation on chest hover */
+    .chest-container:hover .chest {
       animation: shake 0.75s ease;
     }
 
@@ -63,67 +85,91 @@
 </head>
 <body>
 
-  <h1></h1>
 
-  <!-- Audio for chest opening -->
+
   <audio id="openSound" src="TreasureChestOpeningSound.mp3" preload="auto"></audio>
-
-  <!-- Audio for key hover -->
   <audio id="keyHoverSound" src="KeyHoverSound.wav" preload="auto"></audio>
 
-  <img src="ChestKey3.png"
-       alt="Key"
-       class="key"
-       id="key"
-       draggable="true">
-       
-  <div ondrop="unlock(event)" ondragover="allowDrop(event)">
-    <img src="TreasureChest2.png"
-         alt="Chest"
-         class="chest"
-         id="chest">
+  <img src="ChestKey3.png" alt="Key" class="key" id="key" />
+
+  <div class="chest-container">
+    <img src="TreasureChest2.png" alt="Chest" class="chest" id="chest" />
   </div>
 
   <script>
-    function allowDrop(ev) {
-      ev.preventDefault();
-    }
+    const key = document.getElementById('key');
+    const chest = document.getElementById('chest');
+    const chestContainer = document.querySelector('.chest-container');
+    const openSound = document.getElementById('openSound');
+    const keyHoverSound = document.getElementById('keyHoverSound');
 
-    function unlock(ev) {
-      ev.preventDefault();
-      const chest = document.getElementById("chest");
-      const openSound = document.getElementById("openSound");
+    let isDragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
 
-      chest.classList.remove("shake");
-      chest.classList.add("open");
+    key.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      const rect = key.getBoundingClientRect();
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
+      key.style.cursor = 'grabbing';
+    });
 
-      openSound.currentTime = 0;
-      openSound.play();
+    document.addEventListener('mouseup', (e) => {
+      if (isDragging) {
+        isDragging = false;
+        key.style.cursor = 'grab';
 
-      // ✅ Store flag for next page to play audio
-      sessionStorage.setItem("playKRAS3Audio", "true");
+        const chestRect = chestContainer.getBoundingClientRect();
+        const keyRect = key.getBoundingClientRect();
 
-     setTimeout(() => {
-  // Set flag to play audio on next page
-  sessionStorage.setItem("playKRAS3Audio", "true");
+        const isOverChest = !(
+          keyRect.right < chestRect.left ||
+          keyRect.left > chestRect.right ||
+          keyRect.bottom < chestRect.top ||
+          keyRect.top > chestRect.bottom
+        );
 
-  // Redirect
-  window.location.href = "Operation KRAS3.html";
-}, 1000);
+        if (isOverChest) {
+          chest.classList.remove('shake');
+          chest.classList.add('open');
 
-    }
+          openSound.currentTime = 0;
+          openSound.play();
 
-    const key = document.getElementById("key");
-    const keyHoverSound = document.getElementById("keyHoverSound");
+          sessionStorage.setItem('playKRAS3Audio', 'true');
+
+          setTimeout(() => {
+            window.location.href = 'Operation KRAS3.html';
+          }, 1000);
+        }
+      }
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+
+      let newLeft = e.clientX - offsetX;
+      let newTop = e.clientY - offsetY;
+
+      const keyRect = key.getBoundingClientRect();
+
+      if (newLeft < 0) newLeft = 0;
+      if (newTop < 0) newTop = 0;
+      if (newLeft + keyRect.width > window.innerWidth) newLeft = window.innerWidth - keyRect.width;
+      if (newTop + keyRect.height > window.innerHeight) newTop = window.innerHeight - keyRect.height;
+
+      key.style.left = newLeft + 'px';
+      key.style.top = newTop + 'px';
+      key.style.transform = 'none'; // Disable translateX during drag for proper positioning
+    });
 
     let hoverSoundEnabled = false;
-
-    // Enable hover sound after first user interaction
-    document.addEventListener("click", () => {
+    document.addEventListener('click', () => {
       hoverSoundEnabled = true;
     });
 
-    key.addEventListener("mouseenter", () => {
+    key.addEventListener('mouseenter', () => {
       if (hoverSoundEnabled) {
         keyHoverSound.currentTime = 0;
         keyHoverSound.play();
@@ -132,6 +178,9 @@
   </script>
 </body>
 </html>
+
+
+
 
 
 
