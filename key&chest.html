@@ -18,29 +18,33 @@
       position: relative;
     }
 
-   .key {
-  width: 400px;
-  cursor: grab;
-  opacity: 0.85;
-  position: absolute;
-  top: 150px; /* moved up a bit */
-  left: 50%;
-  transform: translateX(-50%);
-  transition: none;
-  z-index: 10;
-}
+    /* Improve image rendering across devices */
+    img {
+      image-rendering: auto;
+      -ms-interpolation-mode: bicubic; /* For IE fallback */
+    }
 
-.chest-container {
-  width: 600px;
-  position: absolute;
-  top: 1100px; /* moved down more */
-  left: 50%;
-  transform: translateX(-50%);
-  user-select: none;
-}
+    .key {
+      width: 400px;
+      cursor: grab;
+      opacity: 0.85;
+      position: absolute;
+      top: 150px;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: none;
+      z-index: 10;
+    }
 
+    .chest-container {
+      width: 600px;
+      position: absolute;
+      top: 1100px;
+      left: 50%;
+      transform: translateX(-50%);
+      user-select: none;
+    }
 
-    /* Chest image itself: handle shake animation */
     .chest {
       width: 100%;
       opacity: 0.85;
@@ -71,7 +75,6 @@
       100% { transform: scale(1.15) rotate(0deg); opacity: 1; }
     }
 
-    /* Apply shake animation on chest hover */
     .chest-container:hover .chest {
       animation: shake 0.75s ease;
     }
@@ -85,15 +88,25 @@
 </head>
 <body>
 
-
-
   <audio id="openSound" src="TreasureChestOpeningSound.mp3" preload="auto"></audio>
   <audio id="keyHoverSound" src="KeyHoverSound.wav" preload="auto"></audio>
 
-  <img src="ChestKey3.png" alt="Key" class="key" id="key" />
+  <!-- Key image with high-res srcset -->
+  <img 
+    src="ChestKey3.png" 
+    srcset="ChestKey3@2x.png 2x, ChestKey3@3x.png 3x" 
+    alt="Key" 
+    class="key" 
+    id="key" />
 
   <div class="chest-container">
-    <img src="TreasureChest2.png" alt="Chest" class="chest" id="chest" />
+    <!-- Chest image with high-res srcset -->
+    <img 
+      src="TreasureChest2.png" 
+      srcset="TreasureChest2@2x.png 2x, TreasureChest2@3x.png 3x" 
+      alt="Chest" 
+      class="chest" 
+      id="chest" />
   </div>
 
   <script>
@@ -161,7 +174,7 @@
 
       key.style.left = newLeft + 'px';
       key.style.top = newTop + 'px';
-      key.style.transform = 'none'; // Disable translateX during drag for proper positioning
+      key.style.transform = 'none';
     });
 
     let hoverSoundEnabled = false;
@@ -178,6 +191,7 @@
   </script>
 </body>
 </html>
+
 
 
 
