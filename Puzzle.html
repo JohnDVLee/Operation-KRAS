@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stones of Passage</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #2f2f2f, #1c1c1c);
+      font-family: 'Georgia', serif;
+      color: #f0e6c8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      overflow: hidden; /* for fireworks */
+      position: relative;
+    }
+
+    h1 {
+      font-size: 48px;
+      color: #ffcc66;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 24px;
+      max-width: 700px;
+      margin-bottom: 40px;
+    }
+
+    .stones {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    .stone {
+      width: 100px;
+      height: 100px;
+      background-color: #3b3b3b;
+      border: 3px solid #aaa;
+      border-radius: 15px;
+      font-size: 48px;
+      color: #ffd700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.1s ease;
+      box-shadow: 0 0 10px #ffd700a0;
+    }
+
+    .stone:active {
+      transform: scale(0.95);
+    }
+
+    #reset {
+      margin-top: 20px;
+      background-color: #666;
+      color: #fff;
+      padding: 12px 24px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 0 10px #444;
+      transition: background-color 0.3s ease;
+    }
+
+    #reset:hover {
+      background-color: #888;
+    }
+
+    #error {
+      color: red;
+      margin-top: 15px;
+      font-size: 20px;
+      font-weight: bold;
+      min-height: 24px;
+    }
+
+    /* Fireworks container */
+    #fireworks {
+      pointer-events: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 9999;
+      overflow: visible;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    /* Spark line */
+    .spark {
+      position: absolute;
+      width: 2px;
+      height: 20px;
+      background: red;
+      border-radius: 1px;
+      opacity: 1;
+      animation: sparkMove 700ms ease-out forwards;
+      transform-origin: bottom center;
+      box-shadow: 0 0 8px currentColor;
+    }
+
+    @keyframes sparkMove {
+      0% {
+        transform: translateY(0) scaleY(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) scaleY(0.3);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Stones of Passage</h1>
+  <p>Five ancient stones bear forgotten letters. Press them in the correct order to reveal the way forward.</p>
+
+  <div class="stones">
+    <div class="stone" data-letter="A">𓅓</div>
+    <div class="stone" data-letter="K">𓄿</div>
+    <div class="stone" data-letter="R">𓊪</div>
+    <div class="stone" data-letter="S">𓃭</div>
+  </div>
+
+  <button id="reset" onclick="resetStones()">Reset</button>
+  <div id="error"></div>
+
+  <!-- Audio placeholders -->
+  <audio id="correctSound" src="SuccessfulPuzzle.mp3" preload="auto"></audio>
+  <audio id="incorrectSound" src="UnsuccessfulPuzzle.wav" preload="auto"></audio>
+
+  <!-- Fireworks container -->
+  <div id="fireworks"></div>
+
+  <script>
+    const correctSequence = ['K', 'R', 'A', 'S'];
+    let userSequence = [];
+
+    const stones = document.querySelectorAll('.stone');
+    const errorDiv = document.getElementById('error');
+    const correctSound = document.getElementById('correctSound');
+    const incorrectSound = document.getElementById('incorrectSound');
+    const fireworksContainer = document.getElementById('fireworks');
+
+    stones.forEach(stone => {
+      stone.addEventListener('click', () => {
+        const letter = stone.dataset.letter;
+        userSequence.push(letter);
+
+        if (userSequence.length === correctSequence.length) {
+          checkAnswer();
+        }
+      });
+    });
+
+    function checkAnswer() {
+      if (JSON.stringify(userSequence) === JSON.stringify(correctSequence)) {
+        errorDiv.textContent = '';
+        correctSound.play();
+        launchFireworks();
+        setTimeout(() => {
+          window.location.href = 'Operation KRAS.html';
+        }, 2000);
+      } else {
+        errorDiv.textContent = 'The stones remain silent... Try again.';
+        incorrectSound.play();
+      }
+    }
+
+    function resetStones() {
+      userSequence = [];
+      errorDiv.textContent = '';
+    }
+
+    // Spark burst effect
+    function launchFireworks() {
+      const count = 25;
+      for (let i = 0; i < count; i++) {
+        createSpark();
+      }
+    }
+
+    function createSpark() {
+      const spark = document.createElement('div');
+      spark.classList.add('spark');
+
+      // Random position inside viewport, but slightly inset so sparks don't clip out
+      const x = Math.random() * (window.innerWidth - 40) + 20;
+      const y = Math.random() * (window.innerHeight - 40) + 20;
+
+      spark.style.left = `${x}px`;
+      spark.style.top = `${y}px`;
+
+      // Random bright color from palette
+      const colors = ['#ff3f3f', '#ffdd00', '#3fff3f', '#3fafff', '#ff3fff'];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      spark.style.backgroundColor = color;
+      spark.style.boxShadow = `0 0 8px ${color}`;
+
+      // Random rotation to spread sparks in all directions
+      const rotation = Math.random() * 360;
+      spark.style.transform = `rotate(${rotation}deg)`;
+
+      fireworksContainer.appendChild(spark);
+
+      spark.addEventListener('animationend', () => {
+        spark.remove();
+      });
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
