@@ -3,88 +3,85 @@
 <head>
   <meta charset="UTF-8" />
   <title>Unlock the Chest</title>
-  <style>
-    body {
-      background: hwb(0 100% 0%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: 'Georgia', serif;
-      margin: 0;
-      user-select: none;
-      overflow: hidden;
-      position: relative;
-    }
+<style>
+  body {
+    background: hwb(0 100% 0%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Changed from center so we can stack key & chest */
+    height: 100vh;
+    font-family: 'Georgia', serif;
+    margin: 0;
+    user-select: none;
+    overflow: hidden;
+    position: relative;
+    padding-top: 50px; /* small top padding so it’s not stuck at top edge */
+  }
 
-    /* Improve image rendering across devices */
-    img {
-      image-rendering: auto;
-      -ms-interpolation-mode: bicubic; /* For IE fallback */
-    }
+ .key {
+  width: 400px;
+  cursor: grab;
+  opacity: 0.85;
+  position: absolute; /* restore absolute so dragging works right */
+  top: 150px; /* starting position */
+  left: 50%;
+  transform: translateX(-50%);
+  transition: none;
+  z-index: 10;
+}
 
-    .key {
-      width: 400px;
-      cursor: grab;
-      opacity: 0.85;
-      position: absolute;
-      top: 150px;
-      left: 50%;
-      transform: translateX(-50%);
-      transition: none;
-      z-index: 10;
-    }
+.chest-container {
+  width: 600px;
+  position: absolute;
+  bottom: 50px; /* stick to bottom */
+  left: 50%;
+  transform: translateX(-50%);
+  user-select: none;
+}
 
-    .chest-container {
-      width: 600px;
-      position: absolute;
-      top: 1100px;
-      left: 50%;
-      transform: translateX(-50%);
-      user-select: none;
-    }
 
-    .chest {
-      width: 100%;
-      opacity: 0.85;
-      transition: transform 0.3s ease;
-      display: block;
-      margin: 0 auto;
-    }
 
-    .shake {
-      animation: shake 0.75s ease;
-    }
+  .chest {
+    width: 100%;
+    opacity: 0.85;
+    transition: transform 0.3s ease;
+    display: block;
+    margin: 0 auto;
+  }
 
-    @keyframes shake {
-      0% { transform: rotate(0deg); }
-      25% { transform: rotate(-15deg); }
-      75% { transform: rotate(15deg); }
-      100% { transform: rotate(0deg); }
-    }
+  .shake {
+    animation: shake 0.75s ease;
+  }
 
-    .open {
-      animation: openChest 2s ease-in-out forwards;
-    }
+  @keyframes shake {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(-15deg); }
+    75% { transform: rotate(15deg); }
+    100% { transform: rotate(0deg); }
+  }
 
-    @keyframes openChest {
-      0% { transform: scale(1) rotate(0deg); }
-      30% { transform: scale(1.1) rotate(-2deg); }
-      60% { transform: scale(1.05) rotate(2deg); }
-      100% { transform: scale(1.15) rotate(0deg); opacity: 1; }
-    }
+  .open {
+    animation: openChest 2s ease-in-out forwards;
+  }
 
-    .chest-container:hover .chest {
-      animation: shake 0.75s ease;
-    }
+  @keyframes openChest {
+    0% { transform: scale(1) rotate(0deg); }
+    30% { transform: scale(1.1) rotate(-2deg); }
+    60% { transform: scale(1.05) rotate(2deg); }
+    100% { transform: scale(1.15) rotate(0deg); opacity: 1; }
+  }
 
-    h1 {
-      margin-bottom: 30px;
-      text-align: center;
-      color: #5c3b1e;
-    }
-  </style>
+  .chest-container:hover .chest {
+    animation: shake 0.75s ease;
+  }
+
+  h1 {
+    margin-bottom: 30px;
+    text-align: center;
+    color: #5c3b1e;
+  }
+</style>
 </head>
 <body>
 
