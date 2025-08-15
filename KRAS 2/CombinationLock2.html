@@ -85,7 +85,6 @@
     <div id="errorMsg" class="error" style="display: none;">Incorrect combination. Try again.</div>
   </div>
 
-  <!-- Plug in your own sound files here -->
   <audio id="successSound" src="SuccessfulTriumphet.mp3" preload="auto"></audio>
   <audio id="failSound" src="UnsuccessfulCombinationLock.wav" preload="auto"></audio>
 
@@ -98,16 +97,19 @@
       const d5 = document.getElementById('digit5').value;
 
       const combination = `${d1}${d2}${d3}${d4}${d5}`;
+
       const successSound = document.getElementById('successSound');
       const failSound = document.getElementById('failSound');
       const errorMsg = document.getElementById('errorMsg');
 
-      if (combination === '69420') {
+      const correctCombination = [48,52,54,55,57].map(n => String.fromCharCode(n)).join('');
+
+      if (combination === correctCombination) {
         successSound.play();
         errorMsg.style.display = 'none';
         setTimeout(() => {
-          window.location.href = 'CombinationLock2.html';
-        }, 1000); // Delay to allow sound to play
+          window.location.href = 'Operation KRAS2.html';
+        }, 1000);
       } else {
         failSound.play();
         errorMsg.style.display = 'block';
@@ -116,4 +118,3 @@
   </script>
 </body>
 </html>
-
